@@ -21,12 +21,15 @@ class Window:
         self.__WIDTH = WIDTH  # width of the window frame
         self.__HEIGHT = HEIGHT  # height og the window frame
         self.__SCREEN_DIM = (self.__WIDTH, self.__HEIGHT)  # screen dimensions
+        self.__BG_COLOR = (50, 50, 50)
         self.__FRAME = pygame.time.Clock()  # clock object tha tmeasures fps
         self.__SCREEN = pygame.display.set_mode(
             self.__SCREEN_DIM)  # SCREEN object, every item in your program will overlay on top of the screen
         self.__SCREEN.fill((50, 50, 50))  # fills the screen with a layer of color
         self.__CAPTION = pygame.display.set_caption(
             self.__TITLE)  # sets the title of the window to the TITLE value. (It doesn't return anything).
+
+    # MODIFIER
 
     def updateFrame(self):
         """
@@ -36,8 +39,31 @@ class Window:
         self.__FRAME.tick(self.__FPS)
         pygame.display.flip()  # updates the computer display with the new frame.
 
+    def clearScreen(self):
+        """
+        Fill the screen with the background color
+        :return:
+        """
+        self.__SCREEN.fill(self.__BG_COLOR)
+
+    def setColor(self, COLOR):
+        """
+        Updates the background color
+        :param COLOR: tuple -> int
+        :return: None
+        """
+        self.__BG_COLOR = COLOR
+
+    # ACCESSOR
+
     def getScreen(self):
         return self.__SCREEN
+
+    def getWindowWidth(self):
+        return self.__WIDTH
+
+    def getWindowHeight(self):
+        return self.__HEIGHT
 
 
 class Text:
@@ -57,6 +83,9 @@ class Text:
         self.__X = 0
         self.__Y = 0
         self.__POS = (self.__X, self.__Y)
+        self.__SPD = 3
+        self.__DIRX = 1
+        self.__DIRY = 1
 
     # MODIFIER METHODS
 
@@ -93,6 +122,73 @@ class Text:
         self.__X = X
         self.__POS = (self.__X, self.__Y)
 
+    def setY(self, Y):
+        self.__Y = Y
+        self.__POS = (self.__X, self.__Y)
+
+    def marqueeX(self, WINDOW_WIDTH):
+        """
+        Object move left to right and then wrap around the screen
+        :param WINDOW_WIDTH: int
+        :return: None
+        """
+        if self.__X > WINDOW_WIDTH:
+            self.__X = -self.__SCREEN.get_width()
+        else:
+            self.__X += self.__SPD
+        self.__POS = (self.__X, self.__Y)
+
+    def marqueeY(self, WINDOW_HEIGHT):
+        """
+        Object move up to down and then wrap around the screen
+        :param WINDOW_HEIGHT: int
+        :return: None
+        """
+        if self.__Y > WINDOW_HEIGHT:
+            self.__Y = -self.__SCREEN.get_height()
+        else:
+            self.__Y += self.__SPD
+        self.__POS = (self.__X, self.__Y)
+
+    def bounceX(self, WINDOW_WIDTH):
+        """
+        Text will bounce back and forth along the X axis
+        :param WINDOW_WIDTH: int
+        :return: None
+        """
+        self.__X += self.__DIRX * self.__SPD
+        if self.__X > WINDOW_WIDTH - self.__SCREEN.get_width():
+            self.__X = WINDOW_WIDTH - self.__SCREEN.get_width()
+            self.__DIRX = -1
+        if self.__X < 0:
+            self.__X = 0
+            self.__DIRX = 1
+
+        self.__POS = (self.__X, self.__Y)
+
+    def bounceY(self, WINDOW_HEIGHT):
+        """
+        Text will bounce up and down along the X axis
+        :param WINDOW_HEIGHT: int
+        :return: None
+        """
+        self.__Y += self.__DIRY * self.__SPD
+        if self.__Y > WINDOW_HEIGHT - self.__SCREEN.get_height():
+            self.__Y = WINDOW_HEIGHT - self.__SCREEN.get_height()
+            self.__DIRY = -1
+        if self.__Y < 0:
+            self.__Y = 0
+            self.__DIRY = 1
+
+        self.__POS = (self.__X, self.__Y)
+
+    def setCentreY(self, WINDOW_HEIGHT):
+        Y = WINDOW_HEIGHT / 2 - self.__SCREEN.get_height() / 2
+        return Y
+
+    def setCentreX(self, WINDOW_WIDTH):
+        self.__X = WINDOW_WIDTH / 2 - self.__SCREEN.get_width() / 2
+
     # ACCESSOR METHODS
 
     def getText(self):
@@ -103,6 +199,17 @@ class Text:
 
     def getX(self):
         return self.__X
+
+    def getY(self):
+        return self.__Y
+
+    def setSpeed(self, SPEED):
+        """
+        update the text's speed
+        :param SPEED:
+        :return:
+        """
+        self.__SPD = SPEED
 
 
 if __name__ == "__main__":

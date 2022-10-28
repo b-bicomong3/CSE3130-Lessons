@@ -13,10 +13,16 @@ if __name__ == "__main__":
     pygame.init()
 
     WINDOW = Window("Hello World", 800, 600, 30)
-    TEXT = Text("hello world")
+    WINDOW.setColor((0, 0, 255))
+    TEXT = Text("(^3^)")
     TEXT.setTextColor((0, 255, 0))
     TEXT.setTextSize(48)
-    TEXT.setPOS(100, 150)
+    TEXT.setPOS(TEXT.setCentreX(WINDOW.getWindowWidth()), TEXT.setCentreY(WINDOW.getWindowHeight()))
+    TEXT.setSpeed(10)
+
+    TEXT2 = Text("(0_0)")
+    TEXT2.setPOS(100, 300)
+    TEXT2.setSpeed(10)
 
     while True:
         # INPUTS
@@ -25,8 +31,17 @@ if __name__ == "__main__":
                 pygame.quit()
                 exit()
         # PROCESSING
-        TEXT.setX(TEXT.getX() + 1)
+        # TEXT.marqueeX(WINDOW.getWindowWidth())
+        # TEXT2.marqueeX(WINDOW.getWindowWidth())
+        TEXT.bounceX(WINDOW.getWindowWidth())
+        TEXT2.bounceX(WINDOW.getWindowWidth())
+        # TEXT.marqueeY(WINDOW.getWindowWidth())
+        # TEXT2.marqueeY(WINDOW.getWindowWidth())
+        TEXT.bounceY(WINDOW.getWindowHeight())
+        TEXT2.bounceY(WINDOW.getWindowHeight())
+
         # OUTPUTS
-        WINDOW.getScreen().fill((50, 50, 50))
+        WINDOW.clearScreen()
         WINDOW.getScreen().blit(TEXT.getText(), TEXT.getPOS())
+        WINDOW.getScreen().blit(TEXT2.getText(), TEXT2.getPOS())
         WINDOW.updateFrame()
