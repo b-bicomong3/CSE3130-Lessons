@@ -21,7 +21,7 @@ class Box:
         self.__COLOR = (255, 255, 255)
         self.__SCREEN = pygame.Surface(self.__DIM, pygame.SRCALPHA, 32)
         self.__SCREEN.fill(self.__COLOR)
-        self.__SPD = 5
+        self.__SPD = 10
 
     # MODIFIER METHODS
     def setX(self, X):
@@ -40,7 +40,7 @@ class Box:
         self.__COLOR = COLOR
         self.__SCREEN.fill(self.__COLOR)
 
-    def moveBox(self, KEYS_PRESSED, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
+    def moveBox(self, KEYS_PRESSED):
         """
         move box with WASD
         :param KEYS_PRESSED: int
@@ -59,6 +59,11 @@ class Box:
         if KEYS_PRESSED[pygame.K_s] == 1:
             self.__Y += self.__SPD
 
+        self.__POS = (self.__X, self.__Y)
+
+        # Stops at the edge of the screen
+
+    def stopAtEdge(self, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
         if self.__X > MAX_WIDTH - self.__SCREEN.get_width():
             self.__X = MAX_WIDTH - self.__SCREEN.get_width()
         elif self.__X < MIN_WIDTH:
@@ -69,6 +74,31 @@ class Box:
         elif self.__Y < MIN_HEIGHT:
             self.__Y = MIN_HEIGHT
 
+        self.__POS = (self.__X, self.__Y)
+
+    def wrapEdge(self, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
+        """
+        when the object goes past one wall, it will reappear on the opposite edge
+        :param MAX_WIDTH: int
+        :param MAX_HEIGHT: int
+        :param MIN_WIDTH: int
+        :param MIN_HEIGHT: int
+        :return: None
+        """
+        if self.__X > MAX_WIDTH:
+            self.__X = MIN_WIDTH - self.__SCREEN.get_width()
+        elif self.__X < MIN_WIDTH - self.__SCREEN.get_width():
+            self.__X = MAX_WIDTH
+
+        if self.__Y > MAX_HEIGHT:
+            self.__Y = MIN_WIDTH - self.__SCREEN.get_height()
+        elif self.__Y < MIN_HEIGHT - self.__SCREEN.get_height():
+            self.__Y = MAX_HEIGHT
+
+        self.__POS = (self.__X, self.__Y)
+
+    def autoScroll(self):
+        self.__X += self.__SPD
         self.__POS = (self.__X, self.__Y)
 
     # ACCESSOR METHODS
@@ -102,8 +132,11 @@ if __name__ == "__main__":
                 exit()
         PRESSED_KEYS = pygame.key.get_pressed()
         # PROCESSOR
-        BOX.moveBox(PRESSED_KEYS, WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
-        BOX2.moveBox(PRESSED_KEYS, WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+        BOX.moveBox(PRESSED_KEYS)
+        BOX2.moveBox(PRESSED_KEYS)
+
+        BOX.stopAtEdge(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+        BOX2.stopAtEdge(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
 
         # OUTPUTS
         WINDOW.clearScreen()

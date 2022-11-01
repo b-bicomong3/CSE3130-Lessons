@@ -1,7 +1,7 @@
 # d_star.py
 
 """
-Title: star-field
+Title: stars
 Author: Beatrix Bicomong
 Date: 28-10-22
 """
@@ -28,10 +28,10 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-        PRESSED_KEYS = pygame.key.get_pressed()
         # PROCESSING
         for BOX in BOXES:
-            BOX.moveBox(PRESSED_KEYS, WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+            BOX.autoScroll()
+            BOX.wrapEdge(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
 
         # OUTPUTS
         WINDOW.clearScreen()
