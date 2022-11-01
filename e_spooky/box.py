@@ -19,13 +19,21 @@ class Box(MySprite):
 
 
 if __name__ == "__main__":
+    from window import Window
     pygame.init()
     BOX = Box()
-    from window import Window
+    BOX.setSpeed(10)
     WINDOW = Window("Box", 800, 600, 30)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+        KEY_PRESSES = pygame.key.get_pressed()
+        BOX.move(KEY_PRESSES)
+        BOX.wrapAll(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+
+        WINDOW.clearScreen()
+        WINDOW.getScreen().blit(BOX.getScreen(), BOX.getPOS())
+        WINDOW.updateFrame()
 

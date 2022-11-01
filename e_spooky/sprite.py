@@ -49,7 +49,79 @@ class MySprite:
     def setHeight(self, HEIGHT):
         self.__HEIGHT = HEIGHT
 
+    def move(self, PRESSED_KEYS):
+        """
+        moves sprite with WASD
+        :param PRESSED_KEYS: list -> int
+        :return:
+        """
+        if PRESSED_KEYS[pygame.K_d] == 1:
+            self.__X += self.__SPD
+        elif PRESSED_KEYS[pygame.K_a] == 1:
+            self.__X -= self.__SPD
+        elif PRESSED_KEYS[pygame.K_w] == 1:
+            self.__Y -= self.__SPD
+        elif PRESSED_KEYS[pygame.K_s] == 1:
+            self.__Y += self.__SPD
+
+        self.__POS = (self.__X, self.__Y)
+
+    # PROCESSING
+
+    def marqueeX(self):
+        """
+        moves sprite from left to right across the screen
+        :return:
+        """
+        self.__X += self.__SPD
+        self.__POS = (self.__X, self.__Y)
+
+    def wrapX(self, MAX_WIDTH, MIN_WIDTH=0):
+        """
+        move sprite to opposite side of the left/right edges
+        :param MAX_WIDTH:
+        :param MIN_WIDTH:
+        :return:
+        """
+        if self.__X > MAX_WIDTH:
+            self.__X = MIN_WIDTH - self.getScreenWidth()
+        elif self.__X < MIN_WIDTH - self.getScreenWidth():
+            self.__X = MAX_WIDTH
+
+        self.__POS = (self.__X, self.__Y)
+
+    def wrapY(self, MAX_HEIGHT, MIN_HEIGHT=0):
+        """
+        move sprite to opposite side of the left/right edges
+        :param MAX_HEIGHT:
+        :param MIN_HEIGHT:
+        :return:
+        """
+        if self.__Y > MAX_HEIGHT:
+            self.__Y = MIN_HEIGHT - self.getScreenHeight()
+        elif self.__Y < MIN_HEIGHT - self.getScreenHeight():
+            self.__Y = MAX_HEIGHT
+
+        self.__POS = (self.__X, self.__Y)
+
+    def wrapAll(self, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
+        self.wrapX(MAX_WIDTH, MIN_WIDTH)
+        self.wrapY(MAX_HEIGHT, MIN_HEIGHT)
+
+    def checkBoundaries(self, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
+        if self.__X > MAX_WIDTH - self.getScreenWidth():
+            self.__X = MAX_WIDTH - self.getScreenWidth()
+        elif self.__X < MIN_WIDTH:
+            self.__X = MIN_WIDTH
+
+        if self.__Y > MAX_HEIGHT - self.getScreenHeight():
+            self.__Y = MAX_HEIGHT - self.getScreenHeight()
+        elif self.__Y < MIN_HEIGHT:
+            self.__Y = MIN_HEIGHT
+
     # ACCESSOR METHODS
+
+    # INPUTS
 
     def getX(self):
         return self.__X
