@@ -21,6 +21,8 @@ class MySprite:
         self._SCREEN = pygame.Surface((1, 1))  # empty Surface of 1 pixel
         self.__WIDTH = 1
         self.__HEIGHT = 1
+        self.__DIR_X = 1
+        self.__DIR_Y = 1
 
     # MODIFIER METHODS
 
@@ -67,6 +69,28 @@ class MySprite:
         self.__POS = (self.__X, self.__Y)
 
     # PROCESSING
+
+    def bounceX(self, MAX_WIDTH, MIN_WIDTH=0):
+        self.__X += self.__DIR_X * self.__SPD
+        if self.__X > MAX_WIDTH - self.getScreenWidth():
+            self.__DIR_X = -1
+        elif self.__X < MIN_WIDTH:
+            self.__DIR_X = 1
+
+        self.__POS = (self.__X, self.__Y)
+
+    def bounceY(self, MAX_HEIGHT, MIN_HEIGHT=0):
+        self.__Y += self.__DIR_Y * self.__SPD
+        if self.__Y > MAX_HEIGHT - self.getScreenHeight():
+            self.__DIR_Y = -1
+        elif self.__Y < MIN_HEIGHT:
+            self.__DIR_Y = 1
+
+        self.__POS = (self.__X, self.__Y)
+
+    def bounceAll(self, MAX_WIDTH, MAX_HEIGHT, MIN_WIDTH=0, MIN_HEIGHT=0):
+        self.bounceX(MAX_WIDTH, MIN_WIDTH)
+        self.bounceY(MAX_HEIGHT, MIN_HEIGHT)
 
     def marqueeX(self):
         """

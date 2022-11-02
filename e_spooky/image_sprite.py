@@ -32,7 +32,8 @@ class ImageSprite(MySprite):
         """
         if SCALE_Y == 0:
             SCALE_Y = SCALE_X
-        self._SCREEN = pygame.transform.scale(self._SCREEN, (self.getScreenWidth()//SCALE_X, self.getScreenHeight()//SCALE_Y))
+        self._SCREEN = pygame.transform.scale(self._SCREEN,
+                                              (self.getScreenWidth() // SCALE_X, self.getScreenHeight() // SCALE_Y))
 
     def flipImageX(self, KEYS_PRESSED):
         if KEYS_PRESSED[pygame.K_d] == 1 and self.__X_FLIP:
@@ -53,20 +54,33 @@ if __name__ == "__main__":
     pygame.init()
     WINDOW = Window("Image Sprite", 800, 600, 30)
     PIKACHU = ImageSprite("media/pikachu.png")
+    GHOST = ImageSprite("media/ghost_sprite.png")
     PIKACHU.setFlipX()
-    PIKACHU.setScale(0.3)
+    PIKACHU.setScale(1)
+    GHOST.setScale(0.5)
     PIKACHU.setSpeed(10)
+    GHOST.setSpeed(10)
+    GHOST.setX(WINDOW.getWindowWidth()/2 - GHOST.getScreenWidth())
+    GHOST.setY(WINDOW.getWindowHeight()/2 - GHOST.getScreenHeight())
+    GHOST.setFlipX()
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
+        # INPUTS
         KEY_PRESSES = pygame.key.get_pressed()
         PIKACHU.move(KEY_PRESSES)
         PIKACHU.wrapAll(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
         PIKACHU.checkBoundaries(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+        GHOST.bounceAll(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
+        GHOST.checkBoundaries(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
 
+
+        # OUTPUTS
         WINDOW.clearScreen()
         WINDOW.getScreen().blit(PIKACHU.getScreen(), PIKACHU.getPOS())
+        WINDOW.getScreen().blit(GHOST.getScreen(), GHOST.getPOS())
         WINDOW.updateFrame()

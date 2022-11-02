@@ -17,9 +17,26 @@ class Box(MySprite):
         self._SCREEN = pygame.Surface(self.__DIM, pygame.SRCALPHA, 32)
         self._SCREEN.fill(self._COLOR)
 
+    def setWidth(self, WIDTH):
+        MySprite.setWidth(self, WIDTH)
+        self.__DIM = self.getWidth(), self.getHeight()
+        self._SCREEN = pygame.Surface(self.__DIM, pygame.SRCALPHA, 32)
+        self._SCREEN.fill(self._COLOR)
+
+    def setHeight(self, HEIGHT):
+        MySprite.setHeight(self, HEIGHT)
+        self.__DIM = self.getWidth(), self.getHeight()
+        self._SCREEN = pygame.Surface(self.__DIM, pygame.SRCALPHA, 32)
+        self._SCREEN.fill(self._COLOR)
+
+    def setColor(self, COLOR):
+        MySprite.setColor(self, COLOR)
+        self._SCREEN.fill(self._COLOR)
+
 
 if __name__ == "__main__":
     from window import Window
+
     pygame.init()
     BOX = Box()
     BOX.setSpeed(10)
@@ -36,4 +53,3 @@ if __name__ == "__main__":
         WINDOW.clearScreen()
         WINDOW.getScreen().blit(BOX.getScreen(), BOX.getPOS())
         WINDOW.updateFrame()
-
