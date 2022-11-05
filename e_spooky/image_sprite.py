@@ -15,6 +15,9 @@ class ImageSprite(MySprite):
         self.__FILE_LOC = IMAGE_FILE
         self._SCREEN = pygame.image.load(self.__FILE_LOC).convert_alpha()
         self.__X_FLIP = False
+        self.__LIVES = 3
+        self.__SCORE = 0
+        self.__COLLIDING = False
 
     def setFlipX(self):
         """
@@ -47,6 +50,29 @@ class ImageSprite(MySprite):
         MySprite.move(self, KEYS_PRESSED)
         self.flipImageX(KEYS_PRESSED)
 
+    def loseLife(self):
+        if self.__LIVES > 0:
+            self.__LIVES -= 1
+
+    def gainLife(self):
+        self.__LIVES += 1
+
+    # ACCESSOR METHODS
+
+    def getLives(self):
+        return self.__LIVES
+
+    def isColliding(self):
+        self.__COLLIDING = True
+
+    def notColliding(self):
+        self.__COLLIDING = False
+
+    # ACCESSOR METHODS
+
+    def getColliding(self):
+        return self.__COLLIDING
+
 
 if __name__ == "__main__":
     from window import Window
@@ -60,8 +86,8 @@ if __name__ == "__main__":
     GHOST.setScale(0.5)
     PIKACHU.setSpeed(10)
     GHOST.setSpeed(10)
-    GHOST.setX(WINDOW.getWindowWidth()/2 - GHOST.getScreenWidth())
-    GHOST.setY(WINDOW.getWindowHeight()/2 - GHOST.getScreenHeight())
+    GHOST.setX(WINDOW.getWindowWidth() / 2 - GHOST.getScreenWidth())
+    GHOST.setY(WINDOW.getWindowHeight() / 2 - GHOST.getScreenHeight())
     GHOST.setFlipX()
 
     while True:
@@ -77,7 +103,6 @@ if __name__ == "__main__":
         PIKACHU.checkBoundaries(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
         GHOST.bounceAll(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
         GHOST.checkBoundaries(WINDOW.getWindowWidth(), WINDOW.getWindowHeight())
-
 
         # OUTPUTS
         WINDOW.clearScreen()
