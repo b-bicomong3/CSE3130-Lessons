@@ -11,6 +11,7 @@ from image_sprite import ImageSprite
 from window import Window
 from text import Text
 from box import Box
+from loader import Color, Image
 
 
 class Game:
@@ -24,19 +25,19 @@ class Game:
         self.__TITLE_BG = Box()
         self.__TITLE_BG.setWidth(self.__WINDOW.getWindowWidth())
         self.__TITLE_BG.setHeight(self.__TITLE.getScreenHeight())
-        self.__TITLE_BG.setColor((0, 0, 0))
+        self.__TITLE_BG.setColor(Color.BLACK)
 
-        self.__PLAYER = ImageSprite("media/pikachu.png")
+        self.__PLAYER = ImageSprite(Image.PLAYER)
         self.__PLAYER.setScale(2)
         self.__PLAYER.setFlipX()
         self.__PLAYER.setSpeed(10)
         self.__PLAYER.setY(self.__TITLE.getScreenHeight())
 
         self.__PLAYER_LIVES = Text(f"Lives: {self.__PLAYER.getLives()}")
-        self.__PLAYER_SCORE = Text(f"Score: {self.__PLAYER.getScore()}")
-        self.__PLAYER_SCORE.setX(self.__WINDOW.getWindowWidth() - self.__PLAYER_SCORE.getScreenWidth() - 70)
+#        self.__PLAYER_SCORE = Text(f"Score: {self.__PLAYER.getScore()}")
+#        self.__PLAYER_SCORE.setX(self.__WINDOW.getWindowWidth() - self.__PLAYER_SCORE.getScreenWidth() - 70)
 
-        self.__ENEMIES = [ImageSprite("media/ghost.png")]
+        self.__ENEMIES = [ImageSprite(Image.ENEMY)]
         self.__ENEMIES[0].setSpeed(5)
         self.__ENEMIES[0].setX(self.__WINDOW.getWindowWidth() // 2 - self.__ENEMIES[0].getScreenWidth() // 2)
         self.__ENEMIES[0].setY(self.__WINDOW.getWindowHeight() // 2 - self.__ENEMIES[0].getScreenHeight() // 2)
@@ -72,12 +73,12 @@ class Game:
                 elif not ENEMY.isCollision(self.__PLAYER.getScreen(), self.__PLAYER.getPOS()):
                     self.__PLAYER.notColliding()
 
-            if self.__PLAYER.getLives():
-                self.__SCORE += 1
-                self.__PLAYER_SCORE.setText(f"Score: {self.__SCORE}")
+#            if self.__PLAYER.getLives():
+#                self.__SCORE += 1
+#                self.__PLAYER_SCORE.setText(f"Score: {self.__SCORE}")
 
-            if self.__SCORE == random.randrange(100):
-                self.__POWERUPS.append(ImageSprite())
+#            if self.__SCORE == random.randrange(100):
+#                self.__POWERUPS.append(ImageSprite())
 
             if self.__PLAYER.getLives() < 1:
                 self.gameOver()
@@ -91,7 +92,7 @@ class Game:
     def blitAll(self):
         self.__WINDOW.getScreen().blit(self.__TITLE_BG.getScreen(), self.__TITLE_BG.getPOS())
         self.__WINDOW.getScreen().blit(self.__TITLE.getScreen(), self.__TITLE.getPOS())
-        self.__WINDOW.getScreen().blit(self.__PLAYER_SCORE.getScreen(), self.__PLAYER_SCORE.getPOS())
+#        self.__WINDOW.getScreen().blit(self.__PLAYER_SCORE.getScreen(), self.__PLAYER_SCORE.getPOS())
         self.__WINDOW.getScreen().blit(self.__PLAYER_LIVES.getScreen(), self.__PLAYER_LIVES.getPOS())
         for POWERUP in self.__POWERUPS:
             self.__WINDOW.getScreen().blit(POWERUP.getScreen(), POWERUP.getPOS())

@@ -5,6 +5,7 @@ Author: Beatrix Bicomong
 Date: 31-10-2022
 """
 import pygame
+from loader import Color
 
 
 class MySprite:
@@ -17,7 +18,7 @@ class MySprite:
         self.__Y = 0
         self.__POS = (self.__X, self.__Y)
         self.__SPD = 1
-        self._COLOR = (255, 255, 255)
+        self._COLOR = Color.WHITE
         self._SCREEN = pygame.Surface((1, 1))  # empty Surface of 1 pixel
         self.__WIDTH = 1
         self.__HEIGHT = 1
