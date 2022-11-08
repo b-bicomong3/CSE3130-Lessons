@@ -60,4 +60,48 @@ Polymorphism is the ability to have the same methods in the different classes pe
 PYRENESS.Cry()  # "Borf"
 BOMBAY.Cry()  # "Meow"
 ```
+
 Note the both objects have the same method, but have different output.
+
+In complex programs, polymorphism is often used to adjust inherited methods to better suit the subclass's need.
+
+## Public, Private, and Partially-Protected Class Members
+
+Classical object-oriented languages. such as C++ and Java, control the access to class resources (i.e. attributes and
+methods) by public, private and protected keywords. Private members of the class are denied access from outside the
+class. These attributes and methods are only handled within the object created from the class. (In python, Privated is
+called Protected). Controlled access to members within a class increases class integrity by only allowing to certain
+members externally (encapsulation)
+
+While some languages, like java, default class members to private, Python defaults class members to private.
+
+__Public Members__ are accessible outside the Class. In Python, all members not starting with an underscore are public.
+
+__Private Members__ are only available within the class. They are denoted with a double underscore at the beginning of
+the member name. Private Members are nto accessible outside the class. In Python, private members are called protected.
+
+__Protected Members__ are available to the class and its subclasses without the need for a public method. They are
+denoted with a single underscore at the beginning of the member name. In Python, protected members are still accessible
+outside the class. In addition, Python calls this partially protected members.
+
+```python
+class MyClass:
+    def __init__(self):
+        self.FIRST_NAME = "Michael"  # Public
+        self.LAST_NAME = "Zhang"  # Paritally Protected
+        self.__MID__INIT = "A"  # Private
+
+    def _protectedMethod(self):
+        return
+
+    def __privateMethods(self):
+        return
+
+
+class subClass(MyClass):
+    def __init__(self):
+        super().__init__()
+
+    def newMethod(self):
+        super()._protectedMethod()  # The __privateMethod would not work.
+```
